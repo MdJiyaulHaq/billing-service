@@ -1,0 +1,24 @@
+from django.urls import path
+from rest_framework.routers import DefaultRouter
+
+from .views import (
+    CustomerViewSet,
+    GatewayWebhookView,
+    InvoiceViewSet,
+    OutstandingCustomersView,
+    ProductViewSet,
+    ReturnViewSet,
+    SalesReportView,
+)
+
+router = DefaultRouter()
+router.register("customers", CustomerViewSet, basename="customer")
+router.register("products", ProductViewSet, basename="product")
+router.register("invoices", InvoiceViewSet, basename="invoice")
+router.register("returns", ReturnViewSet, basename="return")
+
+urlpatterns = router.urls + [
+    path("reports/sales/", SalesReportView.as_view(), name="sales-report"),
+    path("reports/outstanding/", OutstandingCustomersView.as_view(), name="outstanding-customers"),
+    path("webhooks/paygate/", GatewayWebhookView.as_view(), name="paygate-webhook"),
+]
